@@ -1,17 +1,12 @@
+---
 apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
 metadata:
   name: prometheus
-  labels:
-    prometheus: prometheus
+  namespace: monitoring
 spec:
   replicas: 1
   serviceAccountName: prometheus
   serviceMonitorSelector:
     matchLabels:
-      team: frontend
-  alerting:
-    alertmanagers:
-      - namespace: default
-        name: alertmanager
-        port: web
+      team: devops
