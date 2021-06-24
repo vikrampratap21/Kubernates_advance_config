@@ -19,7 +19,7 @@ priorityClassName: ""
 # Url to access prometheus
 prometheus:
   # Value is templated
-  url: http://prometheus.default.svc
+  url: http://prometheus-operated.monitoring.svc
   port: 9090
   path: ""
 
@@ -56,13 +56,12 @@ dnsConfig: {}
 #     value: "2"
 #   - name: edns0
 resources:
-  {}
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi
 
 rules:
   default: true
@@ -127,32 +126,29 @@ tls:
     # Public key of the APIService
 
 # Any extra arguments
-extraArguments:
-  []
-  # - --tls-private-key-file=/etc/tls/tls.key
-  # - --tls-cert-file=/etc/tls/tls.crt
+extraArguments: []
+# - --tls-private-key-file=/etc/tls/tls.key
+# - --tls-cert-file=/etc/tls/tls.crt
 
 # Any extra volumes
 
-extraVolumes:
-  []
-  # - name: example-name
-  #   hostPath:
-  #     path: /path/on/host
-  #     type: DirectoryOrCreate
-  # - name: ssl-certs
-  #   hostPath:
-  #     path: /etc/ssl/certs/ca-bundle.crt
-  #     type: File
+extraVolumes: []
+# - name: example-name
+#   hostPath:
+#     path: /path/on/host
+#     type: DirectoryOrCreate
+# - name: ssl-certs
+#   hostPath:
+#     path: /etc/ssl/certs/ca-bundle.crt
+#     type: File
 
 # Any extra volume mounts
-extraVolumeMounts:
-  []
-  #   - name: example-name
-  #     mountPath: /path/in/container
-  #   - name: ssl-certs
-  #     mountPath: /etc/ssl/certs/ca-certificates.crt
-  #     readOnly: true
+extraVolumeMounts: []
+#   - name: example-name
+#     mountPath: /path/in/container
+#   - name: ssl-certs
+#     mountPath: /etc/ssl/certs/ca-certificates.crt
+#     readOnly: true
 
 tolerations: []
 
