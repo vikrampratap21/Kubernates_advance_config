@@ -2,7 +2,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: sample-app
+  name: express
   namespace: demo
   labels:
     team: devops
@@ -14,4 +14,4 @@ spec:
     - demo
   selector:
     matchLabels:
-      app: sample-app
+      app: express

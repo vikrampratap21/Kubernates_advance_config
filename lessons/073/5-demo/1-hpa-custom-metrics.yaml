@@ -2,13 +2,13 @@
 kind: HorizontalPodAutoscaler
 apiVersion: autoscaling/v2beta1
 metadata:
-  name: sample-app
+  name: express
   namespace: demo
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: sample-app
+    name: express
   minReplicas: 1
   maxReplicas: 10
   metrics:
