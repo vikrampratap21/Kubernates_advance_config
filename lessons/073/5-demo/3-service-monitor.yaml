@@ -9,6 +9,7 @@ metadata:
 spec:
   endpoints:
   - port: http
+    interval: 15s
   namespaceSelector:
     matchNames:
     - demo

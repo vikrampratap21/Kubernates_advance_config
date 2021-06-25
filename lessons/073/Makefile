@@ -14,3 +14,6 @@ run:
 
 run-docker:
 	docker run -p 8080:8080 aputra/express-073:latest
+
+prom:
+	kubectl port-forward svc/prometheus-operated 9090 -n monitoring
