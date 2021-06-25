@@ -2,11 +2,12 @@ const { Counter, register } = require('prom-client');
 const express = require('express');
 const app = express();
 const port = 8081;
+const host = '0.0.0.0';
 
 const c = new Counter({
-	name: 'http_requests_total',
-	help: 'Example of a counter',
-	labelNames: ['method'],
+    name: 'http_requests_total',
+    help: 'Total number of http requests',
+    labelNames: ['method'],
 });
 
 const fibonacci = (num) => {
@@ -26,9 +27,9 @@ app.get('/hello', (req, res) => {
 
 app.get('/metrics', async (req, res) => {
     res.set('Content-Type', register.contentType);
-    res.end(await register.getSingleMetricAsString('http_requests_total'));	
+    res.end(await register.getSingleMetricAsString('http_requests_total'));
 });
 
-app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`);
-})
+app.listen(port, host, () => {
+    console.log(`Server listening at http://${host}:${port}`);
+});
