@@ -4,25 +4,31 @@ const app = express();
 const port = 8081;
 
 const c = new Counter({
-	name: 'test_counter',
+	name: 'http_requests_total',
 	help: 'Example of a counter',
-	labelNames: ['code'],
+	labelNames: ['method'],
 });
 
-app.get('/hello', (req, res) => {
-    c.inc({ code: 200 });
-    res.send('Hello World!');
+const fibonacci = (num) => {
+    if (num <= 1) return 1;
+    return fibonacci(num - 1) + fibonacci(num - 2);
+}
+
+app.get('/cpu', (req, res) => {
+    fibonacci(42);
+    res.send('Fibonacci Sequence');
 })
 
+app.get('/hello', (req, res) => {
+    c.inc({ method: 'GET' });
+    res.send('Hello World!');
+});
+
 app.get('/metrics', async (req, res) => {
-	try {
-		res.set('Content-Type', register.contentType);
-		res.end(await register.getSingleMetricAsString('test_counter'));
-	} catch (ex) {
-		res.status(500).end(ex);
-	}
+    res.set('Content-Type', register.contentType);
+    res.end(await register.getSingleMetricAsString('http_requests_total'));	
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`App listening at http://localhost:${port}`);
 })
