@@ -3,6 +3,7 @@
 [YouTube Tutorial](https://youtu.be/)
 
 prometheus-adapter: https://github.com/kubernetes-sigs/prometheus-adapter
+walkthrough: https://github.com/kubernetes-sigs/prometheus-adapter/blob/master/docs/walkthrough.md
 Options for examples: http_requests_total, cpu
 
 ## Steps
