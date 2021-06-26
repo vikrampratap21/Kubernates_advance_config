@@ -1,13 +1,9 @@
 ---
-# Source: prometheus-adapter/templates/custom-metrics-cluster-role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
     app: prometheus-adapter
-    chart: prometheus-adapter-2.14.2
-    release: custom-metrics
-    heritage: Helm
   name: prometheus-adapter-server-resources
 rules:
 - apiGroups:
@@ -15,15 +11,11 @@ rules:
   resources: ["*"]
   verbs: ["*"]
 ---
-# Source: prometheus-adapter/templates/custom-metrics-cluster-role-binding-hpa.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
     app: prometheus-adapter
-    chart: prometheus-adapter-2.14.2
-    release: custom-metrics
-    heritage: Helm
   name: prometheus-adapter-hpa-controller
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -32,4 +24,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: custom-metrics-prometheus-adapter
-  namespace: "monitoring"
+  namespace: monitoring
