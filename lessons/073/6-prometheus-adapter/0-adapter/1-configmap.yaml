@@ -22,8 +22,7 @@ data:
       metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
     resourceRules:
       cpu:
-        containerLabel: container_label_io_kubernetes_container_name
-        containerQuery: sum(rate(container_cpu_usage_seconds_total{<<.LabelMatchers>>, container!=""}[3m])) by (<<.GroupBy>>)
+        containerQuery: sum(rate(container_cpu_usage_seconds_total{<<.LabelMatchers>>, container_label_io_kubernetes_container_name!=""}[3m])) by (<<.GroupBy>>)
         nodeQuery: sum(rate(container_cpu_usage_seconds_total{<<.LabelMatchers>>, id='/'}[3m])) by (<<.GroupBy>>) by (<<.GroupBy>>)
         resources:
           overrides:
@@ -33,9 +32,9 @@ data:
               resource: node
             container_label_io_kubernetes_pod_name:
               resource: pod
-      memory:
         containerLabel: container_label_io_kubernetes_container_name
-        containerQuery: sum(container_memory_working_set_bytes{<<.LabelMatchers>>, container!=""}) by (<<.GroupBy>>)
+      memory:
+        containerQuery: sum(container_memory_working_set_bytes{<<.LabelMatchers>>, container_label_io_kubernetes_container_name!=""}) by (<<.GroupBy>>)
         nodeQuery: sum(container_memory_working_set_bytes{<<.LabelMatchers>>,id='/'}) by (<<.GroupBy>>)
         resources:
           overrides:
@@ -45,4 +44,5 @@ data:
               resource: node
             container_label_io_kubernetes_pod_name:
               resource: pod
+        containerLabel: container_label_io_kubernetes_container_name
       window: 3m
