@@ -15,10 +15,10 @@ const fibonacci = (num) => {
     return fibonacci(num - 1) + fibonacci(num - 2);
 }
 
-app.get('/cpu', (req, res) => {
+app.get('/fibonacci', (req, res) => {
     fibonacci(42);
     res.send('Fibonacci Sequence');
-})
+});
 
 app.get('/hello', (req, res) => {
     c.inc({ method: 'GET' });
