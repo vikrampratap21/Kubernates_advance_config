@@ -92,3 +92,115 @@ oup_left%28node%29+node_namespace_pod%3Akube_pod_info%3A%7B%7D%29+by+%28node%29
 
 
 curl -H "Content-Type: application/json" -d '{"number": 10}' localhost:8081/fibonacci
+
+
+## Steps
+
+- Go over express app
+- Open 2 tabs and run it locally
+```
+node 0-express/server.js
+```
+```
+curl localhost:8081/fibonacci \
+    -H "Content-Type: application/json" \
+    -d '{"number": 10}'
+```
+```
+curl localhost:8081/fibonacci \
+    -H "Content-Type: application/json" \
+    -d '{"number": 20}'
+```
+```
+curl localhost:8081/metrics
+```
+- Open eks.yaml file and create EKS cluster
+```
+eksctl create cluster -f eks.yaml
+```
+- Create namespaces
+```
+kubectl apply -f 1-namespaces
+```
+- Create Prometheus CRDs
+```
+kubectl apply -f 2-prometheus-operator-crd
+```
+- Opebn 2 tabs and deploy Prometheus Operator
+```
+watch -n 1 -t kubectl get pods -n monitoring
+```
+```
+kubectl apply -f 3-prometheus-operator
+```
+```
+kubectl logs -l app.kubernetes.io/name=prometheus-operator -f -n monitoring
+```
+- Deploy Prometheus Operator
+```
+kubectl apply -f 4-prometheus
+```
+```
+kubectl logs -l app.kubernetes.io/instance=prometheus -f -n monitoring
+```
+
+- Deploy Demo app
+```
+kubectl apply -f 5-demo/0-deployment.yaml
+```
+```
+kubectl apply -f 5-demo/1-service.yaml
+```
+- Open Prometheus Target page
+```
+kubectl port-forward svc/prometheus-operated 9090 -n monitoring
+```
+- Go to http://localhost:9090
+- Create Service Monitor for express app
+```
+kubectl apply -f 5-demo/2-service-monitor.yaml
+```
+- Go back to http://localhost:9090 target section
+- Use `http` to query Prometheus (empty)
+- Port forward express app
+```
+kubectl port-forward svc/express 8081 -n demo
+```
+- Use curl to hit fibonacci enpont twice
+```
+curl localhost:8081/fibonacci \
+    -H "Content-Type: application/json" \
+    -d '{"number": 10}'
+```
+- Use `http` to query Prometheus
+- Deploy HPA
+```
+kubectl apply -f 5-demo/3-hpa-http-requests.yaml
+```
+```
+kubectl get hpa -n demo
+```
+```
+kubectl describe hpa express-http-requests -n demo
+```
+```
+kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
+```
+- Deploy Prometheus adapter
+```
+
+```
+
+
+
+
+
+
+
+
+
+
+## Clean Up
+```
+eksctl delete cluster -f eks.yaml
+```
