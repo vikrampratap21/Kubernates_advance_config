@@ -8,6 +8,18 @@ metadata:
     app: prometheus-adapter
 data:
   config.yaml: |
+    rules:
+    - seriesQuery: 'http_requests_total{namespace!="",pod!=""}'
+      resources:
+        overrides:
+          namespace:
+            resource: namespace
+          pod: 
+            resource: pod
+      name:
+        matches: "^(.*)_total"
+        as: "${1}_per_second"
+      metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
     resourceRules:
       cpu:
         containerLabel: container_label_io_kubernetes_container_name
