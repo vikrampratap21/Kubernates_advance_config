@@ -5,7 +5,6 @@ metadata:
   name: express
   namespace: demo
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: express
