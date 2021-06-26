@@ -193,7 +193,17 @@ kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
 
 
 
+```
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm search repo prometheus-adapter --max-col-width 23
+```
 
+```
+helm install custom-metrics prometheus-community/prometheus-adapter \
+--namespace monitoring \
+ --version 2.14.2 \
+--values 8-prometheus-adapter-helm/1-values.yaml
+```
 
 
 
@@ -202,5 +212,6 @@ kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
 
 ## Clean Up
 ```
+helm repo remove prometheus-community
 eksctl delete cluster -f eks.yaml
 ```
