@@ -1,0 +1,3 @@
+---
+prometheus:
+  url: http://prometheus-operated.monitoring.svc
