@@ -1,3 +1,31 @@
 ---
 prometheus:
   url: http://prometheus-operated.monitoring.svc
+rules:
+  resource:
+    resourceRules:
+      cpu:
+        containerLabel: container_label_io_kubernetes_container_name
+        containerQuery: sum(rate(container_cpu_usage_seconds_total{<<.LabelMatchers>>, container!=""}[3m])) by (<<.GroupBy>>)
+        nodeQuery: sum(rate(container_cpu_usage_seconds_total{<<.LabelMatchers>>, id='/'}[3m])) by (<<.GroupBy>>) by (<<.GroupBy>>)
+        resources:
+          overrides:
+            container_label_io_kubernetes_pod_namespace:
+              resource: namespace
+            node:
+              resource: node
+            container_label_io_kubernetes_pod_name:
+              resource: pod
+      memory:
+        containerLabel: container_label_io_kubernetes_container_name
+        containerQuery: sum(container_memory_working_set_bytes{<<.LabelMatchers>>, container!=""}) by (<<.GroupBy>>)
+        nodeQuery: sum(container_memory_working_set_bytes{<<.LabelMatchers>>,id='/'}) by (<<.GroupBy>>)
+        resources:
+          overrides:
+            container_label_io_kubernetes_pod_namespace:
+              resource: namespace
+            node:
+              resource: node
+            container_label_io_kubernetes_pod_name:
+              resource: pod
+      window: 3m
