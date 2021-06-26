@@ -4,7 +4,9 @@ const app = express();
 const port = 8081;
 const host = '0.0.0.0';
 
-const c = new Counter({
+app.use(express.json());
+
+const counter = new Counter({
     name: 'http_requests_total',
     help: 'Total number of http requests',
     labelNames: ['method'],
@@ -15,14 +17,10 @@ const fibonacci = (num) => {
     return fibonacci(num - 1) + fibonacci(num - 2);
 }
 
-app.get('/fibonacci', (req, res) => {
-    fibonacci(42);
-    res.send('Fibonacci Sequence');
-});
-
-app.get('/hello', (req, res) => {
-    c.inc({ method: 'GET' });
-    res.send('Hello World!');
+app.post('/fibonacci', (req, res) => {
+    const fibonacciNumber = fibonacci(req.body.number);
+    counter.inc({ method: 'POST' })
+    res.send(`Fibonacci number is ${fibonacciNumber}!\n`);
 });
 
 app.get('/metrics', async (req, res) => {

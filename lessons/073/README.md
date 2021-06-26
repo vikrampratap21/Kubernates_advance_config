@@ -84,3 +84,11 @@ $ kubectl -n monitoring-adapter exec -it prometheus-adapter-57d96ff446-97wbw sh
 kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl kubectl exec [POD] -- [COMMAND] instead.
 / $ wget -qO- http://prometheus-kube-prometheus-prometheus.default.svc:9090/prometheus/api/v1/query?query=sum%28%28node_memory_MemTotal_bytes%7Bjob%3D%22node-exporter%22%7D+-+node_memory_MemAvailable_bytes%7Bjob%3D%22node-exporter%22%7D%29+%2A+on+%28namespace%2C+pod%29+gr
 oup_left%28node%29+node_namespace_pod%3Akube_pod_info%3A%7B%7D%29+by+%28node%29
+
+
+
+
+
+
+
+curl -H "Content-Type: application/json" -d '{"number": 10}' localhost:8081/fibonacci
