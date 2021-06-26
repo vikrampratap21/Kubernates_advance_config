@@ -61,3 +61,6 @@ sum(rate(http_requests_total{namespace="demo",pod="express-5cb98c455d-6pnwl"}[2m
 
 # Clean UP
 helm repo remove prometheus-adapter
+
+
+E0626 04:20:56.476552       1 reflector.go:138] k8s.io/client-go/informers/factory.go:134: Failed to watch *v1.Node: failed to list *v1.Node: nodes is forbidden: User "system:serviceaccount:monitoring:custom-metrics-prometheus-adapter" cannot list resource "nodes" in API group "" at the cluster scope
