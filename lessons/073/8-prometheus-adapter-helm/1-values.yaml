@@ -2,6 +2,7 @@
 prometheus:
   url: http://prometheus-operated.monitoring.svc
 rules:
+  default: true
   resource:
     cpu:
       containerLabel: container_label_io_kubernetes_container_name
