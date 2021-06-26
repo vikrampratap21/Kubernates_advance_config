@@ -64,3 +64,23 @@ helm repo remove prometheus-adapter
 
 
 E0626 04:20:56.476552       1 reflector.go:138] k8s.io/client-go/informers/factory.go:134: Failed to watch *v1.Node: failed to list *v1.Node: nodes is forbidden: User "system:serviceaccount:monitoring:custom-metrics-prometheus-adapter" cannot list resource "nodes" in API group "" at the cluster scope
+
+pods.metrics.k8s.io
+custom.metrics.k8s.io
+
+kubectl get --raw /apis/metrics.k8s.io/v1beta1 | jq
+kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
+
+
+kubectl get --raw /apis/metrics.k8s.io/v1beta1 | jq
+
+kubectl get --raw /apis/metrics.k8s.io/v1beta1/namespaces/moniotirng/pods | jq
+
+kubectl top pods
+
+Error from server (ServiceUnavailable): the server is currently unable to handle the request (get pods.metrics.k8s.io)
+
+$ kubectl -n monitoring-adapter exec -it prometheus-adapter-57d96ff446-97wbw sh
+kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl kubectl exec [POD] -- [COMMAND] instead.
+/ $ wget -qO- http://prometheus-kube-prometheus-prometheus.default.svc:9090/prometheus/api/v1/query?query=sum%28%28node_memory_MemTotal_bytes%7Bjob%3D%22node-exporter%22%7D+-+node_memory_MemAvailable_bytes%7Bjob%3D%22node-exporter%22%7D%29+%2A+on+%28namespace%2C+pod%29+gr
+oup_left%28node%29+node_namespace_pod%3Akube_pod_info%3A%7B%7D%29+by+%28node%29
