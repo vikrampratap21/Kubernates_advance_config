@@ -1,17 +1,11 @@
 ---
-# Source: prometheus-adapter/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    {}
-  labels:
-    app: prometheus-adapter
-    chart: prometheus-adapter-2.14.2
-    release: custom-metrics
-    heritage: Helm
   name: custom-metrics-prometheus-adapter
   namespace: monitoring
+  labels:
+    app: prometheus-adapter
 spec:
   ports:
   - port: 443
@@ -19,5 +13,4 @@ spec:
     targetPort: https
   selector:
     app: prometheus-adapter
-    release: custom-metrics
   type: ClusterIP

@@ -1,13 +1,7 @@
 ---
-# Source: prometheus-adapter/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: prometheus-adapter
-    chart: prometheus-adapter-2.14.2
-    release: custom-metrics
-    heritage: Helm
   name: custom-metrics-prometheus-adapter
   namespace: monitoring
 spec:
@@ -15,14 +9,10 @@ spec:
   selector:
     matchLabels:
       app: prometheus-adapter
-      release: custom-metrics
   template:
     metadata:
       labels:
         app: prometheus-adapter
-        chart: prometheus-adapter-2.14.2
-        release: custom-metrics
-        heritage: Helm
       name: prometheus-adapter
       annotations:
         checksum/config: 4b70a56e35e56c8038b94f63f0515e79f22bd49456902c2f3c3d2dd9b2474ece
@@ -78,13 +68,6 @@ spec:
           readOnly: true
         - mountPath: /tmp
           name: tmp
-      nodeSelector:
-        {}
-      affinity:
-        {}
-      priorityClassName: 
-      tolerations:
-        []
       volumes:
       - name: config
         configMap:

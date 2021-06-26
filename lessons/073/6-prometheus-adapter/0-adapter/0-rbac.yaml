@@ -4,9 +4,6 @@ kind: ServiceAccount
 metadata:
   labels:
     app: prometheus-adapter
-    chart: prometheus-adapter-2.14.2
-    release: custom-metrics
-    heritage: Helm
   name: custom-metrics-prometheus-adapter
   namespace: monitoring
 ---
@@ -15,9 +12,6 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     app: prometheus-adapter
-    chart: prometheus-adapter-2.14.2
-    release: custom-metrics
-    heritage: Helm
   name: prometheus-adapter-system-auth-delegator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -26,17 +20,13 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: custom-metrics-prometheus-adapter
-  namespace: "monitoring"
+  namespace: monitoring
 ---
-# Source: prometheus-adapter/templates/cluster-role-binding-resource-reader.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
     app: prometheus-adapter
-    chart: prometheus-adapter-2.14.2
-    release: custom-metrics
-    heritage: Helm
   name: prometheus-adapter-resource-reader
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -45,17 +35,13 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: custom-metrics-prometheus-adapter
-  namespace: "monitoring"
+  namespace: monitoring
 ---
-# Source: prometheus-adapter/templates/cluster-role-resource-reader.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
     app: prometheus-adapter
-    chart: prometheus-adapter-2.14.2
-    release: custom-metrics
-    heritage: Helm
   name: prometheus-adapter-resource-reader
 rules:
 - apiGroups:
@@ -70,15 +56,11 @@ rules:
   - list
   - watch
 ---
-# Source: prometheus-adapter/templates/role-binding-auth-reader.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   labels:
     app: prometheus-adapter
-    chart: prometheus-adapter-2.14.2
-    release: custom-metrics
-    heritage: Helm
   name: prometheus-adapter-auth-reader
   namespace: kube-system
 roleRef:
@@ -88,4 +70,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: custom-metrics-prometheus-adapter
-  namespace: "monitoring"
+  namespace: monitoring
