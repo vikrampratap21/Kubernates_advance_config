@@ -42,6 +42,8 @@ eksctl create cluster -f eks.yaml
 > 2021-06-26 18:24:23 [✔]  EKS cluster "my-cluster-v4" in "us-east-1" region is ready
 ## 3. Create Namespaces in Kubernetes
 - Create `demo` and `monitoring` namespaces
+  - `1-namespaces/0-demo.yaml`
+  - `1-namespaces/1-monitoring.yaml`
 ```
 kubectl apply -f 1-namespaces
 ```
