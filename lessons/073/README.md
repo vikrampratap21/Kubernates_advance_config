@@ -76,6 +76,10 @@ kubectl apply -f 2-prometheus-operator-crd
 > customresourcedefinition.apiextensions.k8s.io/thanosrulers.monitoring.coreos.com created  
 
 ## 5. Deploy Prometheus Operator on Kubernetes
+- Create Prometheus Operator deployment files
+  - `3-prometheus-operator/0-rbac.yaml`
+  - `3-prometheus-operator/1-deployment.yaml`
+  - `3-prometheus-operator/2-service.yaml`
 ```
 kubectl apply -f 3-prometheus-operator
 ```
@@ -87,8 +91,8 @@ kubectl apply -f 3-prometheus-operator
 ```
 kubectl get pods -n monitoring
 ```
-> NAME                                   READY   STATUS    RESTARTS   AGE  
-prometheus-operator-585f487768-745xp   1/1     Running   0          11m  
+> NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STATUS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RESTARTS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AGE  
+prometheus-operator-585f487768-745xp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1/1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Running&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11m  
 ```
 kubectl logs -l app.kubernetes.io/name=prometheus-operator -f -n monitoring
 ```
@@ -97,6 +101,9 @@ kubectl logs -l app.kubernetes.io/name=prometheus-operator -f -n monitoring
 > level=info ts=2021-06-27T01:44:00.79632208Z caller=operator.go:287 component=alertmanageroperator msg="successfully synced all caches"  
 
 ## 6. Deploy Prometheus on Kubernetes
+- Create Prometheus deployment files
+  - `4-prometheus/0-rbac.yaml`
+  - `4-prometheus/1-prometheus.yaml`
 ```
 kubectl apply -f 4-prometheus
 ```
@@ -107,9 +114,9 @@ kubectl apply -f 4-prometheus
 ```
 kubectl get pods -n monitoring
 ```
-> NAME                                   READY   STATUS    RESTARTS   AGE  
-prometheus-operator-585f487768-745xp   1/1     Running   0          11m  
-prometheus-prometheus-0                2/2     Running   1          5m17s  
+> NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STATUS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RESTARTS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AGE  
+prometheus-operator-585f487768-745xp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1/1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Running&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11m  
+prometheus-prometheus-0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2/2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Running&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5m17s  
 ```
 kubectl logs -l app.kubernetes.io/instance=prometheus -f -n monitoring
 ```
