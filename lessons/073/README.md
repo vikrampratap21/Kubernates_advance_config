@@ -2,7 +2,9 @@
 
 [YouTube Tutorial](https://youtu.be/)
 
-## Steps
+# Steps
+
+## Run sample app locally
 
 - Go over express app `0-express`
 - Open 2 tabs and run it locally
