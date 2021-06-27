@@ -95,6 +95,10 @@ prometheus-operator-585f487768-745xp   1/1     Running   0          4m8s
 ```
 kubectl apply -f 4-prometheus
 ```
+> serviceaccount/prometheus created  
+> clusterrole.rbac.authorization.k8s.io/prometheus created  
+> clusterrolebinding.rbac.authorization.k8s.io/prometheus created  
+> prometheus.monitoring.coreos.com/prometheus created  
 ```
 kubectl logs -l app.kubernetes.io/instance=prometheus -f -n monitoring
 ```
