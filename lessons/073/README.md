@@ -109,6 +109,10 @@ kubectl logs -l app.kubernetes.io/instance=prometheus -f -n monitoring
 ```
 kubectl port-forward svc/prometheus-operated 9090 -n monitoring
 ```
+> Forwarding from 127.0.0.1:9090 -> 9090  
+> Forwarding from [::1]:9090 -> 9090  
+- Go to http://localhost:9090
+- Use `http` to query Prometheus (empty)
 
 ```
 kubectl apply -f 5-demo
@@ -116,10 +120,6 @@ kubectl apply -f 5-demo
 > deployment.apps/express created
 ```
 
-> Forwarding from 127.0.0.1:9090 -> 9090  
-> Forwarding from [::1]:9090 -> 9090  
-- Go to http://localhost:9090
-- Use `http` to query Prometheus (empty)
 - Port forward express app
 ```
 kubectl port-forward svc/express 8081 -n demo
