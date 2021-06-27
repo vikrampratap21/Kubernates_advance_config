@@ -188,7 +188,7 @@ kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
   - `6-prometheus-adapter/1-custom-metrics/1-apiservice.yaml`
 
 - Run PromQL `http_requests_total{namespace!="",pod!=""}` query
-- Update `configmap.yaml`
+- Update `6-prometheus-adapter/0-adapter/1-configmap.yaml`
 ```yaml
     rules:
     - seriesQuery: 'http_requests_total{namespace!="",pod!=""}'
@@ -220,6 +220,9 @@ kubectl apply -f 6-prometheus-adapter/0-adapter
 ```
 kubectl apply -f 6-prometheus-adapter/1-custom-metrics
 ```
+> clusterrole.rbac.authorization.k8s.io/prometheus-adapter-server-resources created  
+> clusterrolebinding.rbac.authorization.k8s.io/prometheus-adapter-hpa-controller created  
+> apiservice.apiregistration.k8s.io/v1beta1.custom.metrics.k8s.io created  
 
 ```
 kubectl get apiservice
@@ -227,9 +230,11 @@ kubectl get apiservice
 ```
 kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
 ```
+> "name": "pods/http_requests_per_second",  
 ```
 kubectl get hpa -n demo
 ```
+> http&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deployment/express&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0/500m&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20m
 - Open 3 tabs
 ```
 watch -n 1 -t kubectl get hpa -n demo
@@ -237,8 +242,12 @@ watch -n 1 -t kubectl get hpa -n demo
 ```
 watch -n 1 -t kubectl get pods -n demo
 ```
-```
-for ((i=1;i<=500;i++)); do curl -d '{"number": 10}' -H "Content-Type: application/json" "localhost:8081/fibonacci"; done
+```                    
+for ((i=1;i<=500;i++)); do 
+    echo -n $i-;
+    curl -d '{"number": 10}' -H "Content-Type: application/json" \
+    "localhost:8081/fibonacci"; 
+done
 ```
 
 ## 9. Scale based on CPU
