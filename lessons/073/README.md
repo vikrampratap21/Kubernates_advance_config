@@ -7,7 +7,7 @@
 ## 1. Run Sample App Locally
 
 - Go over express app `0-express`
-- Open 2 tabs and run it
+- Open 2 tabs and run it locally
 ```
 node 0-express/server.js
 ```
