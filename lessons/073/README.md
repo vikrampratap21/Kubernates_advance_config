@@ -253,22 +253,35 @@ done
 ## 9. Scale based on CPU
 
 - Deploy cadvisor
+  - `7-cadvisor/0-rbac.yaml`
+  - `7-cadvisor/1-podsecuritypolicy.yaml`
+  - `7-cadvisor/2-daemonset.yaml`
+  - `7-cadvisor/3-service.yaml`
+  - `7-cadvisor/4-service-monitor.yaml`
 ```
 kubectl apply -f 7-cadvisor
 ```
-```
-kubectl top pod -n demo
-```
-- Create following files
+> serviceaccount/cadvisor created  
+> clusterrole.rbac.authorization.k8s.io/cadvisor created  
+> clusterrolebinding.rbac.authorization.k8s.io/cadvisor created  
+> podsecuritypolicy.policy/cadvisor created  
+> daemonset.apps/cadvisor created  
+> service/cadvisor created  
+> servicemonitor.monitoring.coreos.com/cadvisor created  
+    
+- Go to `localhost:9090` target section
+- Deplopy Metrics API Service
   - `6-prometheus-adapter/2-resource-metrics/0-rbac.yaml`
   - `6-prometheus-adapter/2-resource-metrics/1-apiservice.yaml`
-
-- Update configmap.yaml
-- Get default from default values - https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-adapter
-- Run PromQL query
+    
 ```
-sum(rate(container_cpu_usage_seconds_total{container_label_io_kubernetes_container_name!=""}[3m])) by (container_label_io_kubernetes_container_name)
+kubectl apply -f 6-prometheus-adapter/2-resource-metrics
 ```
+> clusterrole.rbac.authorization.k8s.io/prometheus-adapter-metrics created  
+> clusterrolebinding.rbac.authorization.k8s.io/prometheus-adapter-hpa-controller-metrics created  
+> apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created
+    
+- Update `6-prometheus-adapter/0-adapter/1-configmap.yaml`
 ```yaml
     resourceRules:
       cpu:
@@ -298,30 +311,28 @@ sum(rate(container_cpu_usage_seconds_total{container_label_io_kubernetes_contain
       window: 3m
 ```
 ```
-kubectl apply -f 6-prometheus-adapter/2-resource-metrics
+kubectl apply -f 6-prometheus-adapter/0-adapter/1-configmap.yaml
 ```
-```
-kubectl apply -f 6-prometheus-adapter/4-configmap.yaml
-```
-```
-kubectl get deployment -n monitoring
-```
+> configmap/custom-metrics-prometheus-adapter configured
 ```
 kubectl rollout restart deployment \
 custom-metrics-prometheus-adapter -n monitoring
 ```
+> deployment.apps/custom-metrics-prometheus-adapter restarted
 ```
-kubectl get pods -n monitoring
+kubectl get apiservice
 ```
 ```
-kubectl top pods -n monitoring
+kubectl top pod -n demo
+```
+```
+kubectl top pod -n monitoring
 ```
 
-```
-kubectl top pods -n demo
-```
+## 10. Create CPU based HPA
 
 - Create CPU based HPA
+  - `5-demo/4-hpa-cpu.yaml`
 ```
 kubectl apply -f 5-demo/4-hpa-cpu.yaml
 ```
@@ -330,17 +341,40 @@ kubectl apply -f 5-demo/4-hpa-cpu.yaml
 ```
 curl localhost:8081/fibonacci \
     -H "Content-Type: application/json" \
-    -d '{"number": 46}'
+    -d '{"number": 47}'
 ```
 
-## Deploy with helm 
+## Deploy with helm
 
+- Delete Prometheus Adapter
+```
+kubectl delete -f 6-prometheus-adapter/0-adapter
+```
+```
+kubectl delete -f 6-prometheus-adapter/1-custom-metrics
+```
+```
+kubectl delete -f 6-prometheus-adapter/2-resource-metrics
+```
+```
+kubectl get pods -n monitoring
+```
+```
+kubectl get apiservice
+```
+```
+kubectl top pods -n monitoring
+```
+    
+- Get default from default values - https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-adapter
+    
 ```
 kubectl delete -f 6-prometheus-adapter/2-resource-metrics
 ```
 
 ```
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add prometheus-community \
+    https://prometheus-community.github.io/helm-charts
 helm search repo prometheus-adapter --max-col-width 23
 ```
 - Create `values.yaml` to override default values
@@ -350,11 +384,11 @@ helm install custom-metrics \
 prometheus-community/prometheus-adapter \
 --namespace monitoring \
  --version 2.14.2 \
---values 8-prometheus-adapter-helm/1-values.yaml
+--values values.yaml
 ```
 
 ```
-kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
+kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq | grep http
 ```
 ## Clean Up
 ```
