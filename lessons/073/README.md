@@ -4,7 +4,7 @@
 
 # Steps
 
-## Run sample app locally
+## 1. Run Sample App Locally
 
 - Go over express app `0-express`
 - Open 2 tabs and run it
@@ -31,7 +31,7 @@ curl localhost:8081/metrics
 > \# TYPE http_requests_total counter  
 > \# http_requests_total{method="POST"} 4
 
-## Create Kubernetes Cluster
+## 2. Create EKS Cluster Using eksctl
 - Open `eks.yaml` file and create EKS cluster
 ```
 eksctl create cluster -f eks.yaml
