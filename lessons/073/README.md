@@ -153,7 +153,7 @@ kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
 ```
 > Error from server (NotFound): the server could not find the requested resource  
 
-## Deploy Prometheus Adapter
+## 8. Deploy Prometheus Adapter
 
 - Create following files
   - `6-prometheus-adapter/0-rbac.yaml`
@@ -166,8 +166,15 @@ kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
 ```
 kubectl apply -f 6-prometheus-adapter
 ```
-
-
+```
+kubectl get apiservice
+```
+```
+kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
+```
+```
+kubectl get hpa -n demo
+```
 - Open 3 tabs
 ```
 watch -n 1 -t kubectl get hpa -n demo
@@ -176,43 +183,115 @@ watch -n 1 -t kubectl get hpa -n demo
 watch -n 1 -t kubectl get pods -n demo
 ```
 ```
-kubectl describe hpa http -n demo
+for ((i=1;i<=500;i++)); do curl -d '{"number": 10}' -H "Content-Type: application/json" "localhost:8081/fibonacci"; done
 ```
-> Warning  FailedGetPodsMetric           26s (x13 over 3m30s)  horizontal-pod-autoscaler  unable to get metric http_requests_per_second: unable to fetch metrics from custom metrics API: no custom metrics API (custom.metrics.k8s.io) registered  
+
+## 9. Scale based on CPU
+
+- Deploy cadvisor
 ```
-kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
-```
-> Error from server (NotFound): the server could not find the requested resource  
-- Deploy Prometheus adapter
-> configmap last one
-```
-kubectl apply -f 6-prometheus-adapter
+kubectl apply -f 7-cadvisor
 ```
 ```
-kubectl get apiservice
+kubectl top pod -n demo
+```
+- Create following files
+  - `6-prometheus-adapter/2-resource-metrics/0-rbac.yaml`
+  - `6-prometheus-adapter/2-resource-metrics/1-apiservice.yaml`
+
+- Update configmap.yaml
+- Get default from default values - https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-adapter
+- Run PromQL query
+```
+sum(rate(container_cpu_usage_seconds_total{container_label_io_kubernetes_container_name!=""}[3m])) by (container_label_io_kubernetes_container_name)
+```
+```yaml
+    resourceRules:
+      cpu:
+        containerQuery: sum(rate(container_cpu_usage_seconds_total{<<.LabelMatchers>>, container_label_io_kubernetes_container_name!=""}[3m])) by (<<.GroupBy>>)
+        nodeQuery: sum(rate(container_cpu_usage_seconds_total{<<.LabelMatchers>>, id='/'}[3m])) by (<<.GroupBy>>) by (<<.GroupBy>>)
+        resources:
+          overrides:
+            container_label_io_kubernetes_pod_namespace:
+              resource: namespace
+            node:
+              resource: node
+            container_label_io_kubernetes_pod_name:
+              resource: pod
+        containerLabel: container_label_io_kubernetes_container_name
+      memory:
+        containerQuery: sum(container_memory_working_set_bytes{<<.LabelMatchers>>, container_label_io_kubernetes_container_name!=""}) by (<<.GroupBy>>)
+        nodeQuery: sum(container_memory_working_set_bytes{<<.LabelMatchers>>,id='/'}) by (<<.GroupBy>>)
+        resources:
+          overrides:
+            container_label_io_kubernetes_pod_namespace:
+              resource: namespace
+            node:
+              resource: node
+            container_label_io_kubernetes_pod_name:
+              resource: pod
+        containerLabel: container_label_io_kubernetes_container_name
+      window: 3m
+```
+```
+kubectl apply -f 6-prometheus-adapter/2-resource-metrics
+```
+```
+kubectl apply -f 6-prometheus-adapter/4-configmap.yaml
+```
+```
+kubectl get deployment -n monitoring
+```
+```
+kubectl rollout restart deployment \
+custom-metrics-prometheus-adapter -n monitoring
+```
+```
+kubectl get pods -n monitoring
+```
+```
+kubectl top pods -n monitoring
 ```
 
 ```
-kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
+kubectl top pods -n demo
+```
+
+- Create CPU based HPA
+```
+kubectl apply -f 5-demo/4-hpa-cpu.yaml
+```
+
+- Test with curl
+```
+curl localhost:8081/fibonacci \
+    -H "Content-Type: application/json" \
+    -d '{"number": 46}'
+```
+
+## Deploy with helm 
+
+```
+kubectl delete -f 6-prometheus-adapter/2-resource-metrics
 ```
 
 ```
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm search repo prometheus-adapter --max-col-width 23
 ```
+- Create `values.yaml` to override default values
 
 ```
-helm install custom-metrics prometheus-community/prometheus-adapter \
+helm install custom-metrics \
+prometheus-community/prometheus-adapter \
 --namespace monitoring \
  --version 2.14.2 \
 --values 8-prometheus-adapter-helm/1-values.yaml
 ```
 
-
-
-
-
-
+```
+kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
+```
 ## Clean Up
 ```
 helm repo remove prometheus-community
