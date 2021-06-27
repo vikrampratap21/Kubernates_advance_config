@@ -69,6 +69,7 @@ kubectl apply -f 2-prometheus-operator-crd
 ```
 watch -n 1 -t kubectl get pods -n monitoring
 ```
+> No resources found in monitoring namespace.
 ```
 kubectl apply -f 3-prometheus-operator
 ```
