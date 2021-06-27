@@ -117,6 +117,8 @@ kubectl apply -f 5-demo/1-service.yaml
 ```
 kubectl port-forward svc/prometheus-operated 9090 -n monitoring
 ```
+> Forwarding from 127.0.0.1:9090 -> 9090  
+> Forwarding from [::1]:9090 -> 9090  
 - Go to http://localhost:9090
 - Create Service Monitor for express app
 ```
