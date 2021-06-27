@@ -63,6 +63,8 @@ kubectl apply -f 2-prometheus-operator-crd
 > customresourcedefinition.apiextensions.k8s.io/prometheusrules.monitoring.coreos.com created  
 > customresourcedefinition.apiextensions.k8s.io/servicemonitors.monitoring.coreos.com created  
 > customresourcedefinition.apiextensions.k8s.io/thanosrulers.monitoring.coreos.com created  
+
+## 5. Deploy Prometheus Pperator on Kubernetes
 - Opebn 2 tabs and deploy Prometheus Operator
 ```
 watch -n 1 -t kubectl get pods -n monitoring
