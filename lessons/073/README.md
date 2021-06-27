@@ -45,6 +45,8 @@ eksctl create cluster -f eks.yaml
 ```
 kubectl apply -f 1-namespaces
 ```
+> namespace/demo created  
+> namespace/monitoring created
 
 ## 4. Create Prometheus Operator CRDs
 - Create Prometheus CRDs and RBAC
