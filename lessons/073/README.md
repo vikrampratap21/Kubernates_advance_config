@@ -102,8 +102,9 @@ kubectl apply -f 4-prometheus
 ```
 kubectl logs -l app.kubernetes.io/instance=prometheus -f -n monitoring
 ```
+> level=info ts=2021-06-27T01:50:04.190Z caller=main.go:995 msg="Completed loading of configuration file" filename=/etc/prometheus/config_out/prometheus.env.yaml totalDuration=507.082µs remote_storage=3.213µs web_handler=388ns query_engine=1.274µs scrape=74.372µs scrape_sd=3.853µs notify=996ns notify_sd=1.554µs rules=34.528µs  
 
-- Deploy Demo app
+## 7. Deploy Sample Express App
 ```
 kubectl apply -f 5-demo/0-deployment.yaml
 ```
