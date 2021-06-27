@@ -73,11 +73,11 @@ watch -n 1 -t kubectl get pods -n monitoring
 ```
 kubectl apply -f 3-prometheus-operator
 ```
-> serviceaccount/prometheus-operator created
-> clusterrole.rbac.authorization.k8s.io/prometheus-operator created
-> clusterrolebinding.rbac.authorization.k8s.io/prometheus-operator created
-> deployment.apps/prometheus-operator created
-> service/prometheus-operator created
+> serviceaccount/prometheus-operator created  
+> clusterrole.rbac.authorization.k8s.io/prometheus-operator created  
+> clusterrolebinding.rbac.authorization.k8s.io/prometheus-operator created  
+> deployment.apps/prometheus-operator created  
+> service/prometheus-operator created  
 ```
 kubectl logs -l app.kubernetes.io/name=prometheus-operator -f -n monitoring
 ```
