@@ -162,8 +162,10 @@ kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
   - `6-prometheus-adapter/3-apiservice.yaml`
   - `6-prometheus-adapter/4-configmap.yaml` (only 1 rule)
 - Run PromQL `http_requests_total{namespace!="",pod!=""}` query
-
-
+- Deploy Prometheus Adapter
+```
+kubectl apply -f 6-prometheus-adapter
+```
 
 
 - Open 3 tabs
