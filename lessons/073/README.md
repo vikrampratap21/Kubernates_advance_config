@@ -36,6 +36,7 @@ curl localhost:8081/metrics
 ```
 eksctl create cluster -f eks.yaml
 ```
+## 3. Create namespaces in Kubernetes
 - Create `demo` and `monitoring` namespaces
 ```
 kubectl apply -f 1-namespaces
