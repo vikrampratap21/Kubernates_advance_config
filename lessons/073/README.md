@@ -108,9 +108,11 @@ kubectl logs -l app.kubernetes.io/instance=prometheus -f -n monitoring
 ```
 kubectl apply -f 5-demo/0-deployment.yaml
 ```
+> deployment.apps/express created
 ```
 kubectl apply -f 5-demo/1-service.yaml
 ```
+> service/express created  
 - Open Prometheus Target page
 ```
 kubectl port-forward svc/prometheus-operated 9090 -n monitoring
