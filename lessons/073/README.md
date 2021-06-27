@@ -129,8 +129,7 @@ kubectl port-forward svc/prometheus-operated 9090 -n monitoring
 ```
 > Forwarding from 127.0.0.1:9090 -> 9090  
 > Forwarding from [::1]:9090 -> 9090  
-- Go to http://localhost:9090
-- Use `http` to query Prometheus (empty)
+- Go to http://localhost:9090 target section
 
 - Create following files
   - `5-demo/0-deployment.yaml`
