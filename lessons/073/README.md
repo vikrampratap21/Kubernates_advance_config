@@ -94,7 +94,8 @@ kubectl get pods -n monitoring
 > NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STATUS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RESTARTS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AGE  
 prometheus-operator-585f487768-745xp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1/1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Running&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11m  
 ```
-kubectl logs -l app.kubernetes.io/name=prometheus-operator -f -n monitoring
+kubectl logs -n monitoring \
+-l app.kubernetes.io/name=prometheus-operator
 ```
 > level=info ts=2021-06-27T01:44:00.696399754Z caller=operator.go:355 component=prometheusoperator msg="successfully synced all caches"  
 > level=info ts=2021-06-27T01:44:00.702534377Z caller=operator.go:267 component=thanosoperator msg="successfully synced all caches"  
@@ -118,12 +119,17 @@ kubectl get pods -n monitoring
 prometheus-operator-585f487768-745xp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1/1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Running&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11m  
 prometheus-prometheus-0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2/2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Running&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5m17s  
 ```
-kubectl logs -l app.kubernetes.io/instance=prometheus -f -n monitoring
+kubectl logs -n monitoring \
+-l app.kubernetes.io/instance=prometheus
 ```
 > level=info ts=2021-06-27T01:50:04.190Z caller=main.go:995 msg="Completed loading of configuration file" filename=/etc/prometheus/config_out/prometheus.env.yaml totalDuration=507.082µs remote_storage=3.213µs web_handler=388ns query_engine=1.274µs scrape=74.372µs scrape_sd=3.853µs notify=996ns notify_sd=1.554µs rules=34.528µs  
 
 ## 7. Deploy Sample Express App
-- Open Prometheus Target page
+- Open new terminal tab and run port forward command
+```
+kubectl get svc -n monitoring
+```
+> prometheus-operated&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ClusterIP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;None&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<none>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9090/TCP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3m26s. 
 ```
 kubectl port-forward svc/prometheus-operated 9090 -n monitoring
 ```
@@ -161,10 +167,11 @@ curl localhost:8081/fibonacci \
 ```
 kubectl get hpa -n demo
 ```
-> <unknown>/500m  
+> http&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deployment/express&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\<unknown>/500m&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3m42s
 ```
 kubectl describe hpa http -n demo
 ```
+> Warning&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FailedGetPodsMetric&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;109s (x13 over 4m50s)  horizontal-pod-autoscaler  unable to get metric http_requests_per_second: unable to fetch metrics from custom metrics API: no custom metrics API (custom.metrics.k8s.io) registered
 ```
 kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
 ```
