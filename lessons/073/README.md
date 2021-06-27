@@ -53,6 +53,16 @@ kubectl apply -f 1-namespaces
 ```
 kubectl apply -f 2-prometheus-operator-crd
 ```
+> clusterrole.rbac.authorization.k8s.io/prometheus-crd-view created  
+> clusterrole.rbac.authorization.k8s.io/prometheus-crd-edit created  
+> customresourcedefinition.apiextensions.k8s.io/alertmanagerconfigs.monitoring.coreos.com created  
+> customresourcedefinition.apiextensions.k8s.io/alertmanagers.monitoring.coreos.com created  
+> customresourcedefinition.apiextensions.k8s.io/podmonitors.monitoring.coreos.com created  
+> customresourcedefinition.apiextensions.k8s.io/probes.monitoring.coreos.com created  
+> customresourcedefinition.apiextensions.k8s.io/prometheuses.monitoring.coreos.com created  
+> customresourcedefinition.apiextensions.k8s.io/prometheusrules.monitoring.coreos.com created  
+> customresourcedefinition.apiextensions.k8s.io/servicemonitors.monitoring.coreos.com created  
+> customresourcedefinition.apiextensions.k8s.io/thanosrulers.monitoring.coreos.com created  
 - Opebn 2 tabs and deploy Prometheus Operator
 ```
 watch -n 1 -t kubectl get pods -n monitoring
