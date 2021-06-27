@@ -52,6 +52,15 @@ kubectl apply -f 1-namespaces
 
 ## 4. Create Prometheus Operator CRDs
 - Create Prometheus CRDs and RBAC
+  - `2-prometheus-operator-crd/0-rbac.yaml`
+  - `2-prometheus-operator-crd/1-alertmanagerconfigs.yaml`
+  - `2-prometheus-operator-crd/2-alertmanagers.yaml`
+  - `2-prometheus-operator-crd/3-podmonitors.yaml`
+  - `2-prometheus-operator-crd/4-probes.yaml`
+  - `2-prometheus-operator-crd/5-prometheuses.yaml`
+  - `2-prometheus-operator-crd/6-prometheusrules.yaml`
+  - `2-prometheus-operator-crd/7-servicemonitors.yaml`
+  - `2-prometheus-operator-crd/8-thanosrulers.yaml` 
 ```
 kubectl apply -f 2-prometheus-operator-crd
 ```
