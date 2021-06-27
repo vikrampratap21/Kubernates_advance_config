@@ -7,10 +7,11 @@
 ## Run sample app locally
 
 - Go over express app `0-express`
-- Open 2 tabs and run it locally
+- Open 2 tabs and run it
 ```
 node 0-express/server.js
 ```
+> Server listening at http://0.0.0.0:8081
 ```
 curl localhost:8081/fibonacci \
     -H "Content-Type: application/json" \
