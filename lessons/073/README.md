@@ -160,11 +160,17 @@ kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
 ```
 > Error from server (NotFound): the server could not find the requested resource  
 - Deploy Prometheus adapter
+> configmap last one
+```
+kubectl apply -f 6-prometheus-adapter
+```
+```
+kubectl get apiservice
 ```
 
 ```
-
-
+kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
+```
 
 ```
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
