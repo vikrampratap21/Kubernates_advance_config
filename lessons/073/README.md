@@ -124,6 +124,7 @@ kubectl port-forward svc/prometheus-operated 9090 -n monitoring
 ```
 kubectl apply -f 5-demo/2-service-monitor.yaml
 ```
+> servicemonitor.monitoring.coreos.com/express created  
 - Go back to http://localhost:9090 target section
 - Use `http` to query Prometheus (empty)
 - Port forward express app
