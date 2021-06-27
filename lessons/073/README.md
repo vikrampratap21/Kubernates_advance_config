@@ -85,7 +85,13 @@ kubectl logs -l app.kubernetes.io/name=prometheus-operator -f -n monitoring
 > level=info ts=2021-06-27T01:44:00.702534377Z caller=operator.go:267 component=thanosoperator msg="successfully synced all caches"  
 > level=info ts=2021-06-27T01:44:00.79632208Z caller=operator.go:287 component=alertmanageroperator msg="successfully synced all caches"  
 
-- Deploy Prometheus Operator
+## 6. Deploy Prometheus on Kubernetes
+- Open 2 tabs
+```
+watch -n 1 -t kubectl get pods -n monitoring
+```
+> NAME                                   READY   STATUS    RESTARTS   AGE  
+prometheus-operator-585f487768-745xp   1/1     Running   0          4m8s  
 ```
 kubectl apply -f 4-prometheus
 ```
