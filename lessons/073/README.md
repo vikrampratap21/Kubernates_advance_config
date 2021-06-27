@@ -114,6 +114,11 @@ kubectl port-forward svc/prometheus-operated 9090 -n monitoring
 - Go to http://localhost:9090
 - Use `http` to query Prometheus (empty)
 
+- Create following files
+  - 5-demo/0-deployment.yaml
+  - 5-demo/1-service.yaml
+  - 5-demo/2-service-monitor.yaml
+  - 5-demo/3-hpa-http-requests.yaml
 ```
 kubectl apply -f 5-demo
 ```
