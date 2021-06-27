@@ -137,20 +137,28 @@ curl localhost:8081/fibonacci \
     -H "Content-Type: application/json" \
     -d '{"number": 10}'
 ```
+> Fibonacci number is 89!  
 - Use `http` to query Prometheus
 - Deploy HPA
 ```
 kubectl apply -f 5-demo/3-hpa-http-requests.yaml
 ```
+> horizontalpodautoscaler.autoscaling/express-http-requests created  
+- Open 3 tabs
 ```
-kubectl get hpa -n demo
+watch -n 1 -t kubectl get hpa -n demo
 ```
 ```
-kubectl describe hpa express-http-requests -n demo
+watch -n 1 -t kubectl get pods -n demo
 ```
+```
+kubectl describe hpa http -n demo
+```
+> Warning  FailedGetPodsMetric           26s (x13 over 3m30s)  horizontal-pod-autoscaler  unable to get metric http_requests_per_second: unable to fetch metrics from custom metrics API: no custom metrics API (custom.metrics.k8s.io) registered  
 ```
 kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
 ```
+> Error from server (NotFound): the server could not find the requested resource  
 - Deploy Prometheus adapter
 ```
 
