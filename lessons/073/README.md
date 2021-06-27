@@ -22,7 +22,9 @@ curl localhost:8081/fibonacci \
 ```
 curl localhost:8081/metrics
 ```
-- Open eks.yaml file and create EKS cluster
+
+## Create Kubernetes Cluster
+- Open `eks.yaml` file and create EKS cluster
 ```
 eksctl create cluster -f eks.yaml
 ```
