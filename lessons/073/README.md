@@ -29,7 +29,7 @@ curl localhost:8081/metrics
 ```
 > \# HELP http_requests_total Total number of http requests  
 > \# TYPE http_requests_total counter  
-> \# http_requests_total{method="POST"} 4
+> \# http_requests_total{method="POST"} 2
 
 ## 2. Create EKS Cluster Using eksctl
 - Open `eks.yaml` file and create EKS cluster
