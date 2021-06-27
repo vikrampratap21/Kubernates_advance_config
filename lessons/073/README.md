@@ -81,6 +81,10 @@ kubectl apply -f 3-prometheus-operator
 ```
 kubectl logs -l app.kubernetes.io/name=prometheus-operator -f -n monitoring
 ```
+> level=info ts=2021-06-27T01:44:00.696399754Z caller=operator.go:355 component=prometheusoperator msg="successfully synced all caches"  
+> level=info ts=2021-06-27T01:44:00.702534377Z caller=operator.go:267 component=thanosoperator msg="successfully synced all caches"  
+> level=info ts=2021-06-27T01:44:00.79632208Z caller=operator.go:287 component=alertmanageroperator msg="successfully synced all caches"  
+
 - Deploy Prometheus Operator
 ```
 kubectl apply -f 4-prometheus
