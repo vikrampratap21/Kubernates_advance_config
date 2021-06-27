@@ -2,7 +2,7 @@
 kind: HorizontalPodAutoscaler
 apiVersion: autoscaling/v2beta2
 metadata:
-  name: express-http-requests
+  name: http
   namespace: demo
 spec:
   scaleTargetRef:
