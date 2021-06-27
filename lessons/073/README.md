@@ -105,27 +105,20 @@ kubectl logs -l app.kubernetes.io/instance=prometheus -f -n monitoring
 > level=info ts=2021-06-27T01:50:04.190Z caller=main.go:995 msg="Completed loading of configuration file" filename=/etc/prometheus/config_out/prometheus.env.yaml totalDuration=507.082µs remote_storage=3.213µs web_handler=388ns query_engine=1.274µs scrape=74.372µs scrape_sd=3.853µs notify=996ns notify_sd=1.554µs rules=34.528µs  
 
 ## 7. Deploy Sample Express App
-```
-kubectl apply -f 5-demo/0-deployment.yaml
-```
-> deployment.apps/express created
-```
-kubectl apply -f 5-demo/1-service.yaml
-```
-> service/express created  
 - Open Prometheus Target page
 ```
 kubectl port-forward svc/prometheus-operated 9090 -n monitoring
 ```
+
+```
+kubectl apply -f 5-demo
+```
+> deployment.apps/express created
+```
+
 > Forwarding from 127.0.0.1:9090 -> 9090  
 > Forwarding from [::1]:9090 -> 9090  
 - Go to http://localhost:9090
-- Create Service Monitor for express app
-```
-kubectl apply -f 5-demo/2-service-monitor.yaml
-```
-> servicemonitor.monitoring.coreos.com/express created  
-- Go back to http://localhost:9090 target section
 - Use `http` to query Prometheus (empty)
 - Port forward express app
 ```
