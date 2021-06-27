@@ -180,16 +180,47 @@ kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1 | jq
 ## 8. Deploy Prometheus Adapter
 
 - Create following files
-  - `6-prometheus-adapter/0-rbac.yaml`
-  - `6-prometheus-adapter/1-deployment.yaml`
-  - `6-prometheus-adapter/2-service.yaml`
-  - `6-prometheus-adapter/3-apiservice.yaml`
-  - `6-prometheus-adapter/4-configmap.yaml` (only 1 rule)
+  - `6-prometheus-adapter/0-adapter/0-rbac.yaml`
+  - `6-prometheus-adapter/0-adapter/1-configmap.yaml`
+  - `6-prometheus-adapter/0-adapter/2-deployment.yaml`
+  - `6-prometheus-adapter/0-adapter/3-service.yaml`
+  - `6-prometheus-adapter/1-custom-metrics/0-rbac.yaml`
+  - `6-prometheus-adapter/1-custom-metrics/1-apiservice.yaml`
+
 - Run PromQL `http_requests_total{namespace!="",pod!=""}` query
+- Update `configmap.yaml`
+```yaml
+    rules:
+    - seriesQuery: 'http_requests_total{namespace!="",pod!=""}'
+      resources:
+        overrides:
+          namespace:
+            resource: namespace
+          pod: 
+            resource: pod
+      name:
+        matches: "^(.*)_total"
+        as: "${1}_per_second"
+      metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+```
 - Deploy Prometheus Adapter
 ```
-kubectl apply -f 6-prometheus-adapter
+kubectl apply -f 6-prometheus-adapter/0-adapter
 ```
+> serviceaccount/custom-metrics-prometheus-adapter created  
+> clusterrolebinding.rbac.authorization.k8s.io/prometheus-adapter-system-auth-delegator created  
+> clusterrolebinding.rbac.authorization.k8s.io/prometheus-adapter-resource-reader created  
+> clusterrole.rbac.authorization.k8s.io/prometheus-adapter-resource-reader created 
+> rolebinding.rbac.authorization.k8s.io/prometheus-adapter-auth-reader created  
+> configmap/custom-metrics-prometheus-adapter created  
+> deployment.apps/custom-metrics-prometheus-adapter created  
+> service/custom-metrics-prometheus-adapter created  
+
+- Create API Service for custom metrics
+```
+kubectl apply -f 6-prometheus-adapter/1-custom-metrics
+```
+
 ```
 kubectl get apiservice
 ```
