@@ -122,7 +122,10 @@ kubectl port-forward svc/prometheus-operated 9090 -n monitoring
 ```
 kubectl apply -f 5-demo
 ```
-> deployment.apps/express created
+> deployment.apps/express created  
+> service/express created  
+> servicemonitor.monitoring.coreos.com/express created  
+> horizontalpodautoscaler.autoscaling/http created  
 ```
 
 - Port forward express app
