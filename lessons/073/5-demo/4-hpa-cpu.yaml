@@ -2,7 +2,7 @@
 kind: HorizontalPodAutoscaler
 apiVersion: autoscaling/v2beta2
 metadata:
-  name: express-cpu
+  name: cpu
   namespace: demo
 spec:
   scaleTargetRef:
