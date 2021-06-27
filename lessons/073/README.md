@@ -140,11 +140,7 @@ curl localhost:8081/fibonacci \
 ```
 > Fibonacci number is 89!  
 - Use `http` to query Prometheus
-- Deploy HPA
-```
-kubectl apply -f 5-demo/3-hpa-http-requests.yaml
-```
-> horizontalpodautoscaler.autoscaling/express-http-requests created  
+
 - Open 3 tabs
 ```
 watch -n 1 -t kubectl get hpa -n demo
