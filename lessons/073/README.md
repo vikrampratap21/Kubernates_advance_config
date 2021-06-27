@@ -65,11 +65,6 @@ kubectl apply -f 2-prometheus-operator-crd
 > customresourcedefinition.apiextensions.k8s.io/thanosrulers.monitoring.coreos.com created  
 
 ## 5. Deploy Prometheus Operator on Kubernetes
-- Open 2 tabs and deploy Prometheus Operator
-```
-watch -n 1 -t kubectl get pods -n monitoring
-```
-> No resources found in monitoring namespace.
 ```
 kubectl apply -f 3-prometheus-operator
 ```
@@ -79,6 +74,11 @@ kubectl apply -f 3-prometheus-operator
 > deployment.apps/prometheus-operator created  
 > service/prometheus-operator created  
 ```
+kubectl get pods -n monitoring
+```
+> NAME                                   READY   STATUS    RESTARTS   AGE  
+prometheus-operator-585f487768-745xp   1/1     Running   0          11m  
+```
 kubectl logs -l app.kubernetes.io/name=prometheus-operator -f -n monitoring
 ```
 > level=info ts=2021-06-27T01:44:00.696399754Z caller=operator.go:355 component=prometheusoperator msg="successfully synced all caches"  
@@ -86,12 +86,6 @@ kubectl logs -l app.kubernetes.io/name=prometheus-operator -f -n monitoring
 > level=info ts=2021-06-27T01:44:00.79632208Z caller=operator.go:287 component=alertmanageroperator msg="successfully synced all caches"  
 
 ## 6. Deploy Prometheus on Kubernetes
-- Open 2 tabs
-```
-watch -n 1 -t kubectl get pods -n monitoring
-```
-> NAME                                   READY   STATUS    RESTARTS   AGE  
-prometheus-operator-585f487768-745xp   1/1     Running   0          4m8s  
 ```
 kubectl apply -f 4-prometheus
 ```
@@ -99,6 +93,12 @@ kubectl apply -f 4-prometheus
 > clusterrole.rbac.authorization.k8s.io/prometheus created  
 > clusterrolebinding.rbac.authorization.k8s.io/prometheus created  
 > prometheus.monitoring.coreos.com/prometheus created  
+```
+kubectl get pods -n monitoring
+```
+> NAME                                   READY   STATUS    RESTARTS   AGE  
+prometheus-operator-585f487768-745xp   1/1     Running   0          11m  
+prometheus-prometheus-0                2/2     Running   1          5m17s  
 ```
 kubectl logs -l app.kubernetes.io/instance=prometheus -f -n monitoring
 ```
