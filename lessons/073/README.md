@@ -36,12 +36,14 @@ curl localhost:8081/metrics
 ```
 eksctl create cluster -f eks.yaml
 ```
-## 3. Create namespaces in Kubernetes
+## 3. Create Namespaces in Kubernetes
 - Create `demo` and `monitoring` namespaces
 ```
 kubectl apply -f 1-namespaces
 ```
-- Create Prometheus CRDs
+
+## 4. Create Prometheus Operator CRDs
+- Create Prometheus CRDs and RBAC
 ```
 kubectl apply -f 2-prometheus-operator-crd
 ```
