@@ -127,7 +127,7 @@ kubectl apply -f 5-demo
 > servicemonitor.monitoring.coreos.com/express created  
 > horizontalpodautoscaler.autoscaling/http created  
 ```
-
+- Go back to `http://localhost:9090` target page
 - Port forward express app
 ```
 kubectl port-forward svc/express 8081 -n demo
