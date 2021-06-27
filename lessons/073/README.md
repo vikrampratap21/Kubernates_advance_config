@@ -38,7 +38,7 @@ eksctl create cluster -f eks.yaml
 ```
 > 2021-06-26 18:22:20 [ℹ]  nodegroup "general" has 1 node(s)  
 > 2021-06-26 18:22:20 [ℹ]  node "ip-192-168-11-151.ec2.internal" is ready  
-> 2021-06-26 18:24:23 [ℹ]  kubectl command should work with "/Users/antonputra/.kube/config", try 'kubectl get nodes'
+> 2021-06-26 18:24:23 [ℹ]  kubectl command should work with "/Users/antonputra/.kube/config", try 'kubectl get nodes'  
 > 2021-06-26 18:24:23 [✔]  EKS cluster "my-cluster-v4" in "us-east-1" region is ready
 ## 3. Create Namespaces in Kubernetes
 - Create `demo` and `monitoring` namespaces
